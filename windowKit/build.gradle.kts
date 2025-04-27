@@ -57,7 +57,7 @@ tasks.withType<DokkaTask>().configureEach {
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
         customAssets = listOf(rootDir.resolve("assets/logo-icon.svg"))
         customStyleSheets = listOf(rootDir.resolve("assets/style.css"), rootDir.resolve("assets/prism.css"), rootDir.resolve("assets/main.css"), rootDir.resolve("assets/ui.css"))
-        //homepageLink = "https://github.com/JoshMcRose/WindowKit"
+        homepageLink = "https://github.com/JoshMcRose/WindowKit"
         templatesDir = rootDir.resolve("dokka")
     }
 }
@@ -71,7 +71,7 @@ mavenPublishing {
         name = "WindowKit"
         description = "A library for creating custom Windows and Title Bars in Compose for Desktop."
         inceptionYear = "2025"
-//        url = "https://github.com/JoshMcRose/WindowKit"
+        url = "https://github.com/JoshMcRose/WindowKit"
         licenses {
             license {
                 name = "MIT License"
@@ -87,9 +87,9 @@ mavenPublishing {
             }
         }
         scm {
-//            InputType.url = "https://github.com/JoshMcRose/WindowKit"
-//            connection = "scm:git:git://github.com/JoshMcRose/WindowKit.git"
-//            developerConnection = "scm:git:ssh://git@github.com/JoshMcRose/WindowKit.git"
+            url = "https://github.com/JoshMcRose/WindowKit"
+            connection = "scm:git:git://github.com/JoshMcRose/WindowKit.git"
+            developerConnection = "scm:git:ssh://git@github.com/JoshMcRose/WindowKit.git"
         }
     }
 }
