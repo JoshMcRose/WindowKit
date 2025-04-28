@@ -2,15 +2,14 @@ package io.github.joshmcrose.theme
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Colors
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
-import androidx.compose.material3.ripple
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.remember
 
 @Composable
 fun Material3WindowTheme(
@@ -50,19 +49,23 @@ fun MaterialWindowTheme(
 
 @Composable
 fun WindowTheme(
-    themeColors: ColorSchemes = ColorSchemes(),
+    lightTheme: ThemeColors = DefaultLightThemeColors,
+    darkTheme: ThemeColors? = null,
     ripple: Indication? = null,
+    textSelectionColors: TextSelectionColors? = null,
     shapes: ThemeShapes = WindowTheme.shapes,
     typography: ThemeTypography = WindowTheme.typography,
     content: @Composable () -> Unit
 ) {
     val isDarkTheme = rememberDarkTheme()
-    val colorScheme = themeColors.darkTheme.takeIf { isDarkTheme } ?: themeColors.lightTheme
-    val textStyle = typography["bodyLarge"] ?: DefaultTextStyle
+    val colorScheme = remember { darkTheme.takeIf { isDarkTheme } ?: lightTheme }
+    val textStyle = remember { typography["bodyLarge"] ?: DefaultTextStyle }
+    val selectionColors = remember { textSelectionColors } ?: LocalTextSelectionColors.current
     CompositionLocalProvider(
         LocalColorScheme provides colorScheme,
         LocalIndication provides (ripple ?: ripple()),
         LocalThemeShapes provides shapes,
+        LocalTextSelectionColors provides selectionColors,
         LocalThemeTypography provides typography
     ) {
         ProvideTextStyle(value = textStyle, content = content)

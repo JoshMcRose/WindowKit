@@ -1,15 +1,8 @@
 package io.github.joshmcrose.theme
 
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.persistentMapOf
-
-@Immutable
-data class ColorSchemes(
-    val lightTheme: ThemeColors = DefaultLightThemeColors,
-    val darkTheme: ThemeColors? = null,
-)
 
 typealias ThemeColors = Map<String, Color>
 internal val LocalColorScheme = staticCompositionLocalOf { DefaultLightThemeColors }
