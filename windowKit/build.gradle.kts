@@ -37,11 +37,13 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation(libs.aakira.napier)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.aakira.napier)
+            implementation(libs.kotlinx.collections)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.themedetector)
         }
         desktopTest.dependencies {
             implementation(kotlin("test"))

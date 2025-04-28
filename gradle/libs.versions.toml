@@ -5,11 +5,13 @@ napier = "2.7.1"
 theme-detector = "3.9.1"
 dokka = "2.0.0"
 publish = "0.31.0"
+collections = "0.3.8"
 
 [libraries]
 aakira-napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 themedetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "theme-detector" }
 dokka-base = { module = "org.jetbrains.dokka:dokka-base", version.ref = "dokka" }
+kotlinx-Collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collections" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
