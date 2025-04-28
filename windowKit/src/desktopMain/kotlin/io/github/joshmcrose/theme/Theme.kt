@@ -12,17 +12,14 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 
 @Composable
-fun Material3WindowTheme(
-    lightColorScheme: ColorScheme = MaterialTheme.colorScheme,
-    darkColorScheme: ColorScheme? = null,
+internal fun M3WindowTheme(
+    colorTheme: ColorScheme = MaterialTheme.colorScheme,
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
     content: @Composable () -> Unit
 ) {
-    val isDarkTheme = rememberDarkTheme()
-    val colorScheme = darkColorScheme.takeIf { isDarkTheme } ?: lightColorScheme
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = colorTheme,
         shapes = shapes,
         typography = typography,
         content = content
@@ -30,17 +27,14 @@ fun Material3WindowTheme(
 }
 
 @Composable
-fun MaterialWindowTheme(
-    lightColors: Colors = androidx.compose.material.MaterialTheme.colors,
-    darkColors: Colors? = null,
+internal fun MaterialWindowTheme(
+    colorTheme: Colors = androidx.compose.material.MaterialTheme.colors,
     shapes: androidx.compose.material.Shapes = androidx.compose.material.MaterialTheme.shapes,
     typography: androidx.compose.material.Typography = androidx.compose.material.MaterialTheme.typography,
     content: @Composable () -> Unit
 ) {
-    val isDarkTheme = rememberDarkTheme()
-    val colors = darkColors.takeIf { isDarkTheme } ?: lightColors
     androidx.compose.material.MaterialTheme(
-        colors = colors,
+        colors = colorTheme,
         shapes = shapes,
         typography = typography,
         content = content
@@ -48,21 +42,18 @@ fun MaterialWindowTheme(
 }
 
 @Composable
-fun WindowTheme(
-    lightTheme: ThemeColors = DefaultLightThemeColors,
-    darkTheme: ThemeColors? = null,
+internal fun WindowTheme(
+    colorTheme: ThemeColors = DefaultLightThemeColors,
     ripple: Indication? = null,
     textSelectionColors: TextSelectionColors? = null,
     shapes: ThemeShapes = WindowTheme.shapes,
     typography: ThemeTypography = WindowTheme.typography,
     content: @Composable () -> Unit
 ) {
-    val isDarkTheme = rememberDarkTheme()
-    val colorScheme = remember { darkTheme.takeIf { isDarkTheme } ?: lightTheme }
     val textStyle = remember { typography["bodyLarge"] ?: DefaultTextStyle }
     val selectionColors = remember { textSelectionColors } ?: LocalTextSelectionColors.current
     CompositionLocalProvider(
-        LocalColorScheme provides colorScheme,
+        LocalColorScheme provides colorTheme,
         LocalIndication provides (ripple ?: ripple()),
         LocalThemeShapes provides shapes,
         LocalTextSelectionColors provides selectionColors,
