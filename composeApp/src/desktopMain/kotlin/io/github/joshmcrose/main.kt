@@ -19,8 +19,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement.Floating
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import theme.AppTheme
-import theme.rememberDarkTheme
+import io.github.joshmcrose.theme.AppTheme
+import io.github.joshmcrose.theme.rememberDarkTheme
 import java.awt.Dimension
 
 // TODO: CONCEPTS

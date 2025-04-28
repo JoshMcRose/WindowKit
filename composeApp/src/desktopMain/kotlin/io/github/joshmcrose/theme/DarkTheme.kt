@@ -1,4 +1,4 @@
-package theme
+package io.github.joshmcrose.theme
 
 import androidx.compose.runtime.*
 import org.jetbrains.skiko.SystemTheme

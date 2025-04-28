@@ -1,4 +1,4 @@
-package theme
+package io.github.joshmcrose.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
