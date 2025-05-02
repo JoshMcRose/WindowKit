@@ -1,17 +1,9 @@
 package io.github.joshmcrose
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.MenuBar
@@ -19,8 +11,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement.Floating
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import io.github.joshmcrose.theme.AppTheme
 import io.github.joshmcrose.theme.rememberDarkTheme
+import io.github.joshmcrose.window.MainWindow
 import java.awt.Dimension
 
 // TODO: CONCEPTS
@@ -56,24 +48,31 @@ fun main() = application {
             // TODO
         }
 
-        AppTheme(isDarkTheme) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.Transparent,
-                shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, colorScheme.outlineVariant)
-            ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    // TODO: TitleBar
-
-                    App()
-                }
-            }
-
-            if (isCloseRequested) {
-                // TODO: Implement custom action before closing
-                exitApplication()
-            }
+        MainWindow(
+            title = "TITLE",
+            onCloseRequest = ::exitApplication,
+        ) {
+            App()
         }
+
+//        AppTheme(isDarkTheme) {
+//            Surface(
+//                modifier = Modifier.fillMaxSize(),
+//                color = Color.Transparent,
+//                shape = RoundedCornerShape(8.dp),
+//                border = BorderStroke(1.dp, colorScheme.outlineVariant)
+//            ) {
+//                Column(modifier = Modifier.fillMaxSize()) {
+//                    // TODO: TitleBar
+//
+//                    App()
+//                }
+//            }
+//
+//            if (isCloseRequested) {
+//                // TODO: Implement custom action before closing
+//                exitApplication()
+//            }
+//        }
     }
 }
