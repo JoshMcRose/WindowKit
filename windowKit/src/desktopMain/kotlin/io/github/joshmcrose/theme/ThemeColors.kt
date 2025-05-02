@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.persistentMapOf
 @Immutable
 data class ColorSchemes(
     val lightTheme: ThemeColors = DefaultLightThemeColors,
-    val darkTheme: ThemeColors? = null
+    val darkTheme: ThemeColors? = DefaultDarkThemeColors
 )
 
 typealias ThemeColors = Map<String, Color>
