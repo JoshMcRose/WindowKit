@@ -22,6 +22,8 @@ import androidx.compose.ui.window.rememberWindowState
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
 import io.github.joshmcrose.theme.rememberDarkTheme
+import io.github.joshmcrose.titlebar.MacTitleBar
+import org.jetbrains.skiko.hostOs
 import java.awt.Dimension
 
 @Composable
@@ -75,6 +77,13 @@ fun MainWindow(
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // TODO: TitleBar
+                    if (hostOs.isMacOS){
+                        MacTitleBar(
+
+                        )
+                    } else {
+
+                    }
 
                     content()
                 }

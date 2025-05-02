@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="close">Close</string>
+    <string name="minimize">Minimize</string>
+    <string name="maximize">Maximize</string>
+    <string name="enter_full_Screen">Enter fullscreen</string>
+    <string name="exit_full_screen">Exit fullscreen</string>
+</resources>

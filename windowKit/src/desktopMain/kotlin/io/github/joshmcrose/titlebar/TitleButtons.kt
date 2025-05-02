@@ -2,7 +2,6 @@ package io.github.joshmcrose.titlebar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
@@ -10,7 +9,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -22,17 +23,17 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
-import io.github.joshmcrose.theme.WindowTheme.themeColors
-import io.github.joshmcrose.windowkit.generated.resources.Res
-import io.github.joshmcrose.windowkit.generated.resources.close
-import io.github.joshmcrose.windowkit.generated.resources.close_fullscreen
-import io.github.joshmcrose.windowkit.generated.resources.maximize
-import io.github.joshmcrose.windowkit.generated.resources.minimize
-import io.github.joshmcrose.windowkit.generated.resources.open_in_full
+import io.github.joshmcrose.windowkit.generated.resources.*
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MacTitleButtons(
+    closeColor: Color,
+    minColor: Color,
+    maxColor: Color,
+    disabledColor: Color,
     windowState: WindowState,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
@@ -50,45 +51,70 @@ fun MacTitleButtons(
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
     ) {
         Spacer(Modifier.width(8.dp))
-        Box(
-            modifier = Modifier
-                .focusable(interactionSource = interactionSource)
-                .titleBarButton(
-                    color = themeColors["desktop_close"] ?: Color.Transparent,
-                    onClick = onClose
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isHovered) Icon(painter = painterResource(Res.drawable.close), contentDescription = "Close")
-        }
+        MacButton(
+            painter = Res.drawable.close,
+            contentDescription = stringResource(Res.string.close),
+            color = closeColor,
+            isHovered = isHovered,
+            onClick = onClose
+        )
 
-        Box(
-            modifier = Modifier.titleBarButton(
-                color = themeColors["desktop_minimize"] ?: Color.Transparent,
-                onClick = onMinimize
-            ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isHovered && !isFullScreen)
-                Icon(painter = painterResource(Res.drawable.minimize), contentDescription = "Minimize")
-        }
+        MacButton(
+            painter = Res.drawable.minimize,
+            contentDescription = stringResource(Res.string.minimize),
+            color = if (isFullScreen) disabledColor else minColor,
+            isHovered = isHovered,
+            onClick = onMinimize
+        )
 
-        Box(
-            modifier = Modifier.titleBarButton(
-                color = themeColors["desktop_maximize"] ?: Color.Transparent,
-                onClick = onAdjustSize
-            ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isHovered)
-                Icon(
-                    painter = painterResource(
-                        if (isFullScreen) Res.drawable.open_in_full
-                        else Res.drawable.close_fullscreen
-                    ),
-                    contentDescription = if (isFullScreen) "Exit Fullscreen" else "Enter Fullscreen"
-                )
-        }
+        MacButton(
+            painter = if (isFullScreen) Res.drawable.open_in_full else Res.drawable.close_fullscreen,
+            contentDescription =
+                stringResource(if (isFullScreen) Res.string.exit_full_screen else Res.string.enter_full_Screen),
+            color = maxColor,
+            isHovered = isHovered,
+            onClick = onAdjustSize
+        )
+        Spacer(Modifier.width(8.dp))
+    }
+}
+
+@Composable
+fun WindowsTitleButtons(
+    buttonColor: Color,
+    modifier: Modifier = Modifier,
+    onClose: () -> Unit,
+    onAdjustSize: () -> Unit,
+    onMinimize: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
+    ) {
+        Spacer(Modifier.width(8.dp))
+
+        WindowsButton(
+            buttonColor = buttonColor,
+            painter = painterResource(Res.drawable.minimize),
+            contentDescription = stringResource(Res.string.minimize),
+            onClick = onMinimize
+        )
+
+        WindowsButton(
+            buttonColor = buttonColor,
+            painter = painterResource(Res.drawable.maximize),
+            contentDescription = stringResource(Res.string.maximize),
+            onClick = onAdjustSize
+        )
+
+        WindowsButton(
+            buttonColor = buttonColor,
+            painter = painterResource(Res.drawable.close),
+            contentDescription = stringResource(Res.string.close),
+            onClick = onClose
+        )
+
         Spacer(Modifier.width(8.dp))
     }
 }
@@ -103,11 +129,26 @@ fun Modifier.titleBarButton(color: Color, onClick: () -> Unit): Modifier = compo
 }
 
 @Composable
+fun MacButton(
+    painter: DrawableResource,
+    contentDescription: String?,
+    color: Color,
+    isHovered: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.titleBarButton(color = color, onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        if (isHovered) Icon(painter = painterResource(painter), contentDescription = contentDescription)
+    }
+}
+
+@Composable
 fun WindowsButton(
     buttonColor: Color,
     painter: Painter,
     contentDescription: String?,
-    enabled: Boolean = true,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -115,7 +156,6 @@ fun WindowsButton(
         onClick = onClick,
         modifier = modifier.size(14.dp),
         shape = RectangleShape,
-        enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             containerColor = Color.Transparent,
             contentColor = buttonColor,
