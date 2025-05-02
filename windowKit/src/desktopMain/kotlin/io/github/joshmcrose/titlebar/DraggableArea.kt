@@ -1,4 +1,4 @@
-package io.github.joshmcrose.window
+package io.github.joshmcrose.titlebar
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.fillMaxWidth
