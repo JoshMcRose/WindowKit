@@ -8,6 +8,8 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,7 +36,9 @@ fun MainWindow(
     content: @Composable () -> Unit,
 ) {
     val isDarkTheme = rememberDarkTheme()
-    val colors = remember { theme.colorSchemes.darkTheme?.takeIf { isDarkTheme } ?: theme.colorSchemes.lightTheme }
+    val colors by remember {
+        mutableStateOf(theme.colorSchemes.darkTheme?.takeIf { isDarkTheme } ?: theme.colorSchemes.lightTheme)
+    }
     val selectionColors = remember { theme.textSelectionColors }
 
     Window(
@@ -56,7 +60,7 @@ fun MainWindow(
 
         // TODO: MenuBar
 
-        WindowTheme(
+        WindowTheme (
             colorTheme = colors,
             ripple = theme.rippleIndication,
             textSelectionColors = selectionColors ?: LocalTextSelectionColors.current,
