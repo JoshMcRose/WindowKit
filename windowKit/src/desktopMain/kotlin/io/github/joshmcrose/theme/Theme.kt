@@ -12,7 +12,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 
 @Composable
-internal fun M3WindowTheme(
+internal fun WindowTheme(
     colorTheme: ColorScheme = MaterialTheme.colorScheme,
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = MaterialTheme.typography,
@@ -27,7 +27,7 @@ internal fun M3WindowTheme(
 }
 
 @Composable
-internal fun MaterialWindowTheme(
+internal fun WindowTheme(
     colorTheme: Colors = androidx.compose.material.MaterialTheme.colors,
     shapes: androidx.compose.material.Shapes = androidx.compose.material.MaterialTheme.shapes,
     typography: androidx.compose.material.Typography = androidx.compose.material.MaterialTheme.typography,
