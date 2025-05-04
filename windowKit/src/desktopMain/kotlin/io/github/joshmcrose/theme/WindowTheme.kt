@@ -3,7 +3,6 @@ package io.github.joshmcrose.theme
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.Colors
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -68,7 +67,7 @@ internal fun WindowTheme(
 }
 
 object WindowTheme {
-    val themeColors: ThemeColors
+    val colors: ThemeColors
         @Composable @ReadOnlyComposable get() = LocalColorScheme.current
 
     val shapes: ThemeShapes

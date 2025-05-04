@@ -4,8 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
-import io.github.joshmcrose.theme.ThemeColors
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
 import io.github.joshmcrose.theme.rememberDarkTheme
@@ -73,7 +70,7 @@ fun MainWindow(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Transparent,
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, WindowTheme.themeColors.appBorder)
+                border = BorderStroke(1.dp, WindowTheme.colors.appBorder)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // TODO: TitleBar
