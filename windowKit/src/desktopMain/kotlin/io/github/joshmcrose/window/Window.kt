@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
+import io.github.joshmcrose.theme.ThemeColors
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
 import io.github.joshmcrose.theme.rememberDarkTheme
@@ -65,7 +66,6 @@ fun MainWindow(
         WindowTheme (
             colorTheme = colors,
             ripple = theme.rippleIndication,
-            textSelectionColors = selectionColors ?: LocalTextSelectionColors.current,
             shapes = theme.shapes,
             typography = theme.typography
         ) {
@@ -73,7 +73,7 @@ fun MainWindow(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Transparent,
                 shape = RoundedCornerShape(8.dp),
-                border = BorderStroke(1.dp, colorScheme.outlineVariant)
+                border = BorderStroke(1.dp, WindowTheme.themeColors.appBorder)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // TODO: TitleBar

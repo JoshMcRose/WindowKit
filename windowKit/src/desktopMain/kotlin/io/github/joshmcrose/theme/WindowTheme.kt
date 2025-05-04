@@ -49,13 +49,13 @@ internal fun WindowTheme(
 internal fun WindowTheme(
     colorTheme: ThemeColors = DefaultLightThemeColors,
     ripple: Indication? = null,
-    textSelectionColors: TextSelectionColors? = null,
     shapes: ThemeShapes = WindowTheme.shapes,
     typography: ThemeTypography = WindowTheme.typography,
     content: @Composable () -> Unit
 ) {
+    val localTextSelectionColors = LocalTextSelectionColors.current
     val textStyle = remember { typography["bodyLarge"] ?: DefaultTextStyle }
-    val selectionColors = remember { textSelectionColors } ?: LocalTextSelectionColors.current
+    val selectionColors = remember { colorTheme.textSelectionColors ?: localTextSelectionColors }
     CompositionLocalProvider(
         LocalColorScheme provides colorTheme,
         LocalIndication provides (ripple ?: ripple()),

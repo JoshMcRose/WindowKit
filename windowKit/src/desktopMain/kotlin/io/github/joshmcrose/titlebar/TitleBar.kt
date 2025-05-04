@@ -1,11 +1,7 @@
 package io.github.joshmcrose.titlebar
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +18,7 @@ fun WindowScope.MacTitleBar(
     minColor: Color,
     maxColor: Color,
     disabledColor: Color,
+    containerColor: Color,
     windowState: WindowState,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
@@ -29,7 +26,7 @@ fun WindowScope.MacTitleBar(
     onMinimize: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().height(34.dp).background(colorScheme.surfaceContainer),
+        modifier = modifier.fillMaxWidth().height(34.dp).background(containerColor),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         MacTitleButtons(
@@ -45,8 +42,7 @@ fun WindowScope.MacTitleBar(
         )
 
         DraggableArea(
-            height = 40.dp,
-            modifier = Modifier.weight(.9f),
+            modifier = Modifier.fillMaxHeight().weight(.9f),
             adjustSize = onAdjustSize
         )
     }
@@ -79,8 +75,7 @@ fun WindowScope.WindowsTitleBar(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DraggableArea(
-                height = 40.dp,
-                modifier = Modifier.weight(.85f),
+                modifier = Modifier.fillMaxHeight().weight(.85f),
                 adjustSize = onAdjustSize
             )
 
