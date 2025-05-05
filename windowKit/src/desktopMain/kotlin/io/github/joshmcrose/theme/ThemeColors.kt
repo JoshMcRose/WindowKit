@@ -4,6 +4,8 @@ import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
 
 @Immutable
 data class ColorSchemes(
@@ -58,7 +60,7 @@ fun lightColors(
     surfaceContainer: Color = DefaultLightThemeColors.surfaceContainer,
     surfaceContainerHigh: Color = DefaultLightThemeColors.surfaceContainerHigh,
     surfaceContainerHighest: Color = DefaultLightThemeColors.surfaceContainerHighest,
-    themeColors: Map<String, Color>? = null
+    themeColors: ImmutableMap<String, Color> = DefaultLightThemeColors.themeColors
 ) = ThemeColors(
     appBackground = appBackground,
     appBorder = appBorder,
@@ -152,7 +154,7 @@ fun darkColors(
     surfaceContainer: Color = DefaultDarkThemeColors.surfaceContainer,
     surfaceContainerHigh: Color = DefaultDarkThemeColors.surfaceContainerHigh,
     surfaceContainerHighest: Color = DefaultDarkThemeColors.surfaceContainerHighest,
-    themeColors: Map<String, Color>? = null
+    themeColors: ImmutableMap<String, Color> = DefaultDarkThemeColors.themeColors
 ) = ThemeColors(
     appBackground = appBackground,
     appBorder = appBorder,
@@ -342,5 +344,5 @@ data class ThemeColors(
     val surfaceContainerHigh: Color = Color.Unspecified,
     val surfaceContainerHighest: Color = Color.Unspecified,
 
-    val themeColors: Map<String, Color>? = null
+    val themeColors: ImmutableMap<String, Color> = persistentMapOf()
 )
