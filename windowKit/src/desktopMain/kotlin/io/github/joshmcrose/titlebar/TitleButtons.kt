@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
+import io.github.joshmcrose.window.WindowProperties
 import io.github.joshmcrose.windowkit.generated.resources.*
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
@@ -35,9 +36,10 @@ fun MacTitleButtons(
     maxColor: Color,
     disabledColor: Color,
     windowState: WindowState,
+    windowProperties: WindowProperties,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onAdjustSize: () -> Unit,
+    onAdjustSize: (() -> Unit)?,
     onMinimize: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -71,9 +73,10 @@ fun MacTitleButtons(
             painter = if (isFullScreen) Res.drawable.open_in_full else Res.drawable.close_fullscreen,
             contentDescription =
                 stringResource(if (isFullScreen) Res.string.exit_full_screen else Res.string.enter_full_Screen),
-            color = maxColor,
+            color = if (windowProperties.resizable) maxColor else disabledColor,
+            enabled = windowProperties.resizable,
             isHovered = isHovered,
-            onClick = onAdjustSize
+            onClick = onAdjustSize ?: {}
         )
         Spacer(Modifier.width(8.dp))
     }
@@ -82,9 +85,10 @@ fun MacTitleButtons(
 @Composable
 fun WindowsTitleButtons(
     buttonColor: Color,
+    windowProperties: WindowProperties,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onAdjustSize: () -> Unit,
+    onAdjustSize: (() -> Unit)?,
     onMinimize: () -> Unit
 ) {
     Row(
@@ -103,9 +107,10 @@ fun WindowsTitleButtons(
 
         WindowsButton(
             buttonColor = buttonColor,
+            enabled = windowProperties.resizable,
             painter = painterResource(Res.drawable.maximize),
             contentDescription = stringResource(Res.string.maximize),
-            onClick = onAdjustSize
+            onClick = onAdjustSize ?: {}
         )
 
         WindowsButton(
@@ -119,13 +124,13 @@ fun WindowsTitleButtons(
     }
 }
 
-fun Modifier.titleBarButton(color: Color, onClick: () -> Unit): Modifier = composed {
+fun Modifier.titleBarButton(color: Color, enabled: Boolean = true, onClick: () -> Unit): Modifier = composed {
     clip(CircleShape)
         .size(14.dp)
         .background(color, shape = CircleShape) // TODO: Test this
 //        .border(width = 1.dp, color = colorScheme.tertiary.copy(alpha = 0.5f), shape = CircleShape)
         .shadow(elevation = 2.dp, shape = CircleShape, clip = true)
-        .clickable(onClick = onClick)
+        .clickable(onClick = onClick, enabled = enabled)
 }
 
 @Composable
@@ -134,10 +139,11 @@ fun MacButton(
     contentDescription: String?,
     color: Color,
     isHovered: Boolean,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier.titleBarButton(color = color, onClick = onClick),
+        modifier = Modifier.titleBarButton(color = color, enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         if (isHovered) Icon(painter = painterResource(painter), contentDescription = contentDescription)
@@ -149,6 +155,7 @@ fun WindowsButton(
     buttonColor: Color,
     painter: Painter,
     contentDescription: String?,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -156,6 +163,7 @@ fun WindowsButton(
         onClick = onClick,
         modifier = modifier.size(14.dp),
         shape = RectangleShape,
+        enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             containerColor = Color.Transparent,
             contentColor = buttonColor,

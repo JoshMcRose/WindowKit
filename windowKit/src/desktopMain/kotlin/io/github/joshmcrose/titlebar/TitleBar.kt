@@ -11,6 +11,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.WindowState
+import io.github.joshmcrose.window.WindowProperties
 
 @Composable
 fun WindowScope.MacTitleBar(
@@ -20,9 +21,10 @@ fun WindowScope.MacTitleBar(
     disabledColor: Color,
     containerColor: Color,
     windowState: WindowState,
+    windowProperties: WindowProperties,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onAdjustSize: () -> Unit,
+    onAdjustSize: (() -> Unit)?,
     onMinimize: () -> Unit
 ) {
     Row(
@@ -35,6 +37,7 @@ fun WindowScope.MacTitleBar(
             maxColor = maxColor,
             disabledColor = disabledColor,
             windowState = windowState,
+            windowProperties = windowProperties,
             onClose = onClose,
             onMinimize = onMinimize,
             onAdjustSize = onAdjustSize,
@@ -54,9 +57,10 @@ fun WindowScope.WindowsTitleBar(
     titleStyle: TextStyle,
     contentColor: Color,
     containerColor: Color,
+    windowProperties: WindowProperties,
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onAdjustSize: () -> Unit,
+    onAdjustSize: (() -> Unit)?,
     onMinimize: () -> Unit
 ) {
     Box(
@@ -81,6 +85,7 @@ fun WindowScope.WindowsTitleBar(
 
             WindowsTitleButtons(
                 buttonColor = contentColor,
+                windowProperties = windowProperties,
                 onClose = onClose,
                 onMinimize = onMinimize,
                 onAdjustSize = onAdjustSize,

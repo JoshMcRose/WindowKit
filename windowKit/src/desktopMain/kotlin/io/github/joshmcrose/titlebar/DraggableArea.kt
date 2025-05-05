@@ -9,8 +9,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.window.WindowScope
 
 @Composable
-fun WindowScope.DraggableArea(modifier: Modifier = Modifier, adjustSize: () -> Unit) = WindowDraggableArea(
+fun WindowScope.DraggableArea(modifier: Modifier = Modifier, adjustSize: (() -> Unit)?) = WindowDraggableArea(
     modifier = modifier
         .fillMaxWidth()
-        .pointerInput(Unit) { detectTapGestures(onDoubleTap = { adjustSize() }) }
+        .pointerInput(Unit) { detectTapGestures(onDoubleTap = { adjustSize?.invoke() }) }
 )
