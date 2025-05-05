@@ -3,7 +3,6 @@ package io.github.joshmcrose.window
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,9 +18,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
-import io.github.joshmcrose.theme.DefaultTextStyle
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
+import io.github.joshmcrose.theme.WindowTheme.shapes
 import io.github.joshmcrose.theme.rememberDarkTheme
 import io.github.joshmcrose.titlebar.MacTitleBar
 import io.github.joshmcrose.titlebar.WindowsTitleBar
@@ -72,7 +71,7 @@ fun MainWindow(
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Transparent,
-                shape = RoundedCornerShape(8.dp), // TODO
+                shape = shapes.small,
                 border = BorderStroke(1.dp, WindowTheme.colors.appBorder)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
