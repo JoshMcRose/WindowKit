@@ -21,6 +21,8 @@ import androidx.compose.ui.window.rememberWindowState
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
 import io.github.joshmcrose.theme.WindowTheme.shapes
+import io.github.joshmcrose.theme.WindowTheme.colors
+import io.github.joshmcrose.theme.WindowTheme.typography
 import io.github.joshmcrose.theme.rememberDarkTheme
 import io.github.joshmcrose.titlebar.MacTitleBar
 import io.github.joshmcrose.titlebar.WindowsTitleBar
@@ -39,7 +41,7 @@ fun MainWindow(
     content: @Composable () -> Unit,
 ) {
     val isDarkTheme = rememberDarkTheme()
-    val colors by remember {
+    val themeColors by remember {
         mutableStateOf(theme.colorSchemes.darkTheme?.takeIf { isDarkTheme } ?: theme.colorSchemes.lightTheme)
     }
 
@@ -63,7 +65,7 @@ fun MainWindow(
         // TODO: MenuBar
 
         WindowTheme (
-            colorTheme = colors,
+            colorTheme = themeColors,
             ripple = theme.rippleIndication,
             shapes = theme.shapes,
             typography = theme.typography
@@ -72,17 +74,17 @@ fun MainWindow(
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Transparent,
                 shape = shapes.small,
-                border = BorderStroke(1.dp, WindowTheme.colors.appBorder)
+                border = BorderStroke(1.dp, colors.appBorder)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
                     // TODO: TitleBar
                     if (hostOs.isMacOS){
                         MacTitleBar(
-                            closeColor = WindowTheme.colors.macCloseIconColor,
-                            minColor = WindowTheme.colors.macMinimizeIconColor,
-                            maxColor = WindowTheme.colors.macMaximizeIconColor,
-                            disabledColor = WindowTheme.colors.macDisabledToolbarIconColor,
-                            containerColor = WindowTheme.colors.titlebarBackground,
+                            closeColor = colors.macCloseIconColor,
+                            minColor = colors.macMinimizeIconColor,
+                            maxColor = colors.macMaximizeIconColor,
+                            disabledColor = colors.macDisabledToolbarIconColor,
+                            containerColor = colors.titlebarBackground,
                             windowState = state,
                             windowProperties = windowProperties,
                             onClose = onCloseRequest,
@@ -98,9 +100,9 @@ fun MainWindow(
                     } else {
                         WindowsTitleBar(
                             title = title,
-                            titleStyle = WindowTheme.typography["titleMedium"] ?: TextStyle.Default, // TODO
-                            contentColor = WindowTheme.colors.windowsToolbarIconColor,
-                            containerColor = WindowTheme.colors.titlebarBackground,
+                            titleStyle = typography["titleMedium"] ?: TextStyle.Default, // TODO
+                            contentColor = colors.windowsToolbarIconColor,
+                            containerColor = colors.titlebarBackground,
                             windowProperties = windowProperties,
                             onClose = onCloseRequest,
                             onAdjustSize = if (windowProperties.resizable) {
