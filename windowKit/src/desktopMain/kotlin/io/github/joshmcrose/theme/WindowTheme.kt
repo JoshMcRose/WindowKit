@@ -53,7 +53,6 @@ internal fun WindowTheme(
     content: @Composable () -> Unit
 ) {
     val localTextSelectionColors = LocalTextSelectionColors.current
-    val textStyle = remember { typography["bodyLarge"] ?: DefaultTextStyle }
     val selectionColors = remember { colorTheme.textSelectionColors ?: localTextSelectionColors }
     CompositionLocalProvider(
         LocalColorScheme provides colorTheme,
@@ -62,7 +61,7 @@ internal fun WindowTheme(
         LocalTextSelectionColors provides selectionColors,
         LocalThemeTypography provides typography
     ) {
-        ProvideTextStyle(value = textStyle, content = content)
+        ProvideTextStyle(value = typography.defaultTextStyle, content = content)
     }
 }
 

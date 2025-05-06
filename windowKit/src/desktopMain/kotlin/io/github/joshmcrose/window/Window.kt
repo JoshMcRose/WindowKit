@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -20,8 +19,8 @@ import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
 import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
-import io.github.joshmcrose.theme.WindowTheme.shapes
 import io.github.joshmcrose.theme.WindowTheme.colors
+import io.github.joshmcrose.theme.WindowTheme.shapes
 import io.github.joshmcrose.theme.WindowTheme.typography
 import io.github.joshmcrose.theme.rememberDarkTheme
 import io.github.joshmcrose.titlebar.MacTitleBar
@@ -100,7 +99,7 @@ fun MainWindow(
                     } else {
                         WindowsTitleBar(
                             title = title,
-                            titleStyle = typography["titleMedium"] ?: TextStyle.Default, // TODO
+                            titleStyle = typography.titleMedium,
                             contentColor = colors.windowsToolbarIconColor,
                             containerColor = colors.titlebarBackground,
                             windowProperties = windowProperties,

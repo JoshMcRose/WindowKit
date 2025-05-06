@@ -1,19 +1,12 @@
 package io.github.joshmcrose.theme
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.runtime.structuralEqualityPolicy
+import androidx.compose.runtime.*
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
-import kotlinx.collections.immutable.ImmutableMap
-import kotlinx.collections.immutable.persistentMapOf
 
-typealias ThemeTypography = ImmutableMap<String, TextStyle>
 internal val LocalThemeTypography = staticCompositionLocalOf { DefaultTypography }
 
 @Composable
@@ -239,20 +232,25 @@ internal object TypefaceTokens {
     val WeightRegular = FontWeight.Normal
 }
 
-val DefaultTypography: ThemeTypography = persistentMapOf(
-    "displayLarge" to DisplayLarge,
-    "displayMedium" to DisplayMedium,
-    "displaySmall" to DisplaySmall,
-    "headlineLarge" to HeadlineLarge,
-    "headlineMedium" to HeadlineMedium,
-    "headlineSmall" to HeadlineSmall,
-    "titleLarge" to TitleLarge,
-    "titleMedium" to TitleMedium,
-    "titleSmall" to TitleSmall,
-    "bodyLarge" to BodyLarge,
-    "bodyMedium" to BodyMedium,
-    "bodySmall" to BodySmall,
-    "labelLarge" to LabelLarge,
-    "labelMedium" to LabelMedium,
-    "labelSmall" to LabelSmall,
+val DefaultTypography = ThemeTypography()
+
+@Immutable
+data class ThemeTypography(
+    val defaultTextStyle: TextStyle = DefaultTextStyle,
+    val titleStyle: TextStyle = TitleLarge,
+    val displayLarge: TextStyle = DisplayLarge,
+    val displayMedium: TextStyle = DisplayMedium,
+    val displaySmall: TextStyle = DisplaySmall,
+    val headlineLarge: TextStyle = HeadlineLarge,
+    val headlineMedium: TextStyle = HeadlineMedium,
+    val headlineSmall: TextStyle = HeadlineSmall,
+    val titleLarge: TextStyle = TitleLarge,
+    val titleMedium: TextStyle = TitleMedium,
+    val titleSmall: TextStyle = TitleSmall,
+    val bodyLarge: TextStyle = BodyLarge,
+    val bodyMedium: TextStyle = BodyMedium,
+    val bodySmall: TextStyle = BodySmall,
+    val labelLarge: TextStyle = LabelLarge,
+    val labelMedium: TextStyle = LabelMedium,
+    val labelSmall: TextStyle = LabelSmall
 )
