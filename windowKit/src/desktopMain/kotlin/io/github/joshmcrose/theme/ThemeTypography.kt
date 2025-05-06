@@ -6,6 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableMap
 
 internal val LocalThemeTypography = staticCompositionLocalOf { DefaultTypography }
 
@@ -252,5 +253,6 @@ data class ThemeTypography(
     val bodySmall: TextStyle = BodySmall,
     val labelLarge: TextStyle = LabelLarge,
     val labelMedium: TextStyle = LabelMedium,
-    val labelSmall: TextStyle = LabelSmall
+    val labelSmall: TextStyle = LabelSmall,
+    val typographyTheme: ImmutableMap<String, TextStyle>? = null
 )

@@ -63,7 +63,7 @@ fun MainWindow(
 
         // TODO: MenuBar
 
-        WindowTheme (
+        WindowTheme(
             colorTheme = themeColors,
             ripple = theme.rippleIndication,
             shapes = theme.shapes,
