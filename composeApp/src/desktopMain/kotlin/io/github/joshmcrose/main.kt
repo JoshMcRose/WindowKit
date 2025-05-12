@@ -29,50 +29,52 @@ fun main() = application {
 
     var isCloseRequested by remember { mutableStateOf(false) }
 
-    Window(
-        onCloseRequest = { isCloseRequested = true },
+    MainWindow(
         title = "TITLE",
-        state = windowState,
-        //icon = painterResource(Res.drawable.keyboard), TODO: Keep this property in mind
-        visible = true,
-        undecorated = true,
-        transparent = true,
-        resizable = true,
-        enabled = !isCloseRequested,
-        alwaysOnTop = false,
-        focusable = true
+        onCloseRequest = ::exitApplication,
     ) {
-        window.minimumSize = Dimension(1200.dp.value.toInt(), 800.dp.value.toInt())
-
-        MenuBar {
-            // TODO
-        }
-
-        MainWindow(
-            title = "TITLE",
-            onCloseRequest = ::exitApplication,
-        ) {
-            App()
-        }
-
-//        AppTheme(isDarkTheme) {
-//            Surface(
-//                modifier = Modifier.fillMaxSize(),
-//                color = Color.Transparent,
-//                shape = RoundedCornerShape(8.dp),
-//                border = BorderStroke(1.dp, colorScheme.outlineVariant)
-//            ) {
-//                Column(modifier = Modifier.fillMaxSize()) {
-//                    // TODO: TitleBar
-//
-//                    App()
-//                }
-//            }
-//
-//            if (isCloseRequested) {
-//                // TODO: Implement custom action before closing
-//                exitApplication()
-//            }
-//        }
+        App()
     }
+
+//    Window(
+//        onCloseRequest = { isCloseRequested = true },
+//        title = "TITLE",
+//        state = windowState,
+//        //icon = painterResource(Res.drawable.keyboard), TODO: Keep this property in mind
+//        visible = true,
+//        undecorated = true,
+//        transparent = true,
+//        resizable = true,
+//        enabled = !isCloseRequested,
+//        alwaysOnTop = false,
+//        focusable = true
+//    ) {
+//        window.minimumSize = Dimension(1200.dp.value.toInt(), 800.dp.value.toInt())
+//
+////        MenuBar {
+////            // TODO
+////        }
+//
+//
+//
+////        AppTheme(isDarkTheme) {
+////            Surface(
+////                modifier = Modifier.fillMaxSize(),
+////                color = Color.Transparent,
+////                shape = RoundedCornerShape(8.dp),
+////                border = BorderStroke(1.dp, colorScheme.outlineVariant)
+////            ) {
+////                Column(modifier = Modifier.fillMaxSize()) {
+////                    // TODO: TitleBar
+////
+////                    App()
+////                }
+////            }
+////
+////            if (isCloseRequested) {
+////                // TODO: Implement custom action before closing
+////                exitApplication()
+////            }
+////        }
+//    }
 }

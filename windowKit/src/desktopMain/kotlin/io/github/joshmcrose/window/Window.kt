@@ -4,10 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
@@ -21,11 +18,9 @@ import io.github.joshmcrose.theme.ThemeProperties
 import io.github.joshmcrose.theme.WindowTheme
 import io.github.joshmcrose.theme.WindowTheme.colors
 import io.github.joshmcrose.theme.WindowTheme.shapes
-import io.github.joshmcrose.theme.WindowTheme.typography
 import io.github.joshmcrose.theme.rememberDarkTheme
-import io.github.joshmcrose.titlebar.MacTitleBar
-import io.github.joshmcrose.titlebar.WindowsTitleBar
-import org.jetbrains.skiko.hostOs
+import io.github.joshmcrose.titlebar.TitleBar
+import io.github.joshmcrose.titlebar.TitleBarProperties
 import java.awt.Dimension
 
 @Composable
@@ -37,12 +32,16 @@ fun MainWindow(
     state: WindowState = rememberWindowState(),
     theme: ThemeProperties = ThemeProperties(),
     windowProperties: WindowProperties = WindowProperties(),
+    titleBarProperties: TitleBarProperties = TitleBarProperties(),
     content: @Composable () -> Unit,
 ) {
     val isDarkTheme = rememberDarkTheme()
     val themeColors by remember {
         mutableStateOf(theme.colorSchemes.darkTheme?.takeIf { isDarkTheme } ?: theme.colorSchemes.lightTheme)
     }
+
+    val defaultMinHeight by remember { mutableStateOf(titleBarProperties.height.value.toInt()) }
+    var defaultMinWidth by remember { mutableStateOf(0) }
 
     Window(
         onCloseRequest = onCloseRequest,
@@ -59,7 +58,9 @@ fun MainWindow(
         onPreviewKeyEvent = windowProperties.onPreviewKeyEvent,
         onKeyEvent = windowProperties.onKeyEvent
     ) {
-        minSize?.let { window.minimumSize = Dimension(it.width.value.toInt(), it.height.value.toInt()) }
+        window.minimumSize = minSize?.let {
+            Dimension(it.width.value.toInt(), it.height.value.toInt())
+        } ?: Dimension(defaultMinWidth, defaultMinHeight)
 
         // TODO: MenuBar
 
@@ -76,44 +77,31 @@ fun MainWindow(
                 border = BorderStroke(1.dp, colors.appBorder)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    // TODO: TitleBar
-                    if (hostOs.isMacOS){
-                        MacTitleBar(
-                            closeColor = colors.macCloseIconColor,
-                            minColor = colors.macMinimizeIconColor,
-                            maxColor = colors.macMaximizeIconColor,
-                            disabledColor = colors.macDisabledToolbarIconColor,
-                            containerColor = colors.titlebarBackground,
-                            windowState = state,
-                            windowProperties = windowProperties,
-                            onClose = onCloseRequest,
-                            onAdjustSize = if (windowProperties.resizable) {
-                                {
-                                    state.placement = if (state.placement == WindowPlacement.Floating)
-                                        WindowPlacement.Fullscreen
-                                    else WindowPlacement.Floating
-                                }
-                            } else null,
-                            onMinimize = { state.isMinimized = !state.isMinimized }
-                        )
-                    } else {
-                        WindowsTitleBar(
-                            title = title,
-                            titleStyle = typography.titleMedium,
-                            contentColor = colors.windowsToolbarIconColor,
-                            containerColor = colors.titlebarBackground,
-                            windowProperties = windowProperties,
-                            onClose = onCloseRequest,
-                            onAdjustSize = if (windowProperties.resizable) {
-                                {
-                                    state.placement = if (state.placement == WindowPlacement.Floating)
-                                        WindowPlacement.Maximized
-                                    else WindowPlacement.Floating
-                                }
-                            } else null,
-                            onMinimize = { state.isMinimized = !state.isMinimized }
-                        )
-                    }
+                    TitleBar(
+                        title = title,
+                        windowState = state,
+                        windowProperties = windowProperties,
+                        titleBarProperties = titleBarProperties,
+                        onClose = onCloseRequest,
+                        onAdjustSize = if (windowProperties.resizable) { // TODO: Extract into own function
+                            {
+                                state.placement = if (state.placement == WindowPlacement.Floating)
+                                    WindowPlacement.Fullscreen
+                                else WindowPlacement.Floating
+                            }
+                        } else null,
+                        onMaximize = if (windowProperties.resizable) { // TODO: Extract into own function
+                            {
+                                state.placement = if (state.placement == WindowPlacement.Maximized)
+                                    WindowPlacement.Floating
+                                else WindowPlacement.Maximized
+                            }
+                        } else null,
+                        onMinimize = { state.isMinimized = !state.isMinimized },
+                        windowSizeCallback = {
+                            defaultMinWidth = it
+                        }
+                    )
 
                     content()
                 }
