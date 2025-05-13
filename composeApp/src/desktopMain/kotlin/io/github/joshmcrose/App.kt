@@ -16,7 +16,7 @@ fun App() {
         Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.statusBars)
-            .background(colorScheme.surfaceContainer) // Window BG Color applied here - transparency can be applied
+            .background(WindowTheme.colors.appBackground) // Window BG Color applied here - transparency can be applied
     ) {
 
     }
