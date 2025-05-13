@@ -210,6 +210,7 @@ fun darkColors(
 val DefaultLightThemeColors: ThemeColors = ThemeColors(
     appBackground = Color(0xFFEFEEE2),
     appBorder = Color(0xFFC7C8B8),
+    titlebarBackground = Color.White,
     titleBarForeground = Color(0xFF556523),
     macCloseIconColor = Color(red = 255, green = 59, blue = 48),
     macMinimizeIconColor = Color(red = 255, green = 204, blue = 0),
@@ -256,6 +257,7 @@ val DefaultLightThemeColors: ThemeColors = ThemeColors(
 val DefaultDarkThemeColors: ThemeColors = ThemeColors(
     appBackground = Color(0xFF1F2019),
     appBorder = Color(0xFF46483C),
+    titlebarBackground = Color.Black,
     titleBarForeground = Color(0xFFBCCF81),
     macCloseIconColor = Color(red = 255, green = 69, blue = 58),
     macMinimizeIconColor = Color(red = 255, green = 212, blue = 38),
@@ -303,7 +305,7 @@ val DefaultDarkThemeColors: ThemeColors = ThemeColors(
 data class ThemeColors(
     val appBackground: Color,
     val appBorder: Color = appBackground,
-    val titlebarBackground: Color = appBackground,
+    val titlebarBackground: Color,
     val titleBarForeground: Color,
 
     val macCloseIconColor: Color = DefaultLightThemeColors.macCloseIconColor,
