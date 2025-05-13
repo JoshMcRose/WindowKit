@@ -36,7 +36,7 @@ fun MainWindow(
     content: @Composable () -> Unit,
 ) {
     val isDarkTheme = rememberDarkTheme()
-    val themeColors by remember {
+    val themeColors by remember(isDarkTheme) {
         mutableStateOf(theme.colorSchemes.darkTheme?.takeIf { isDarkTheme } ?: theme.colorSchemes.lightTheme)
     }
 
