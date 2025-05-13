@@ -10,6 +10,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.WindowState
 import io.github.joshmcrose.theme.WindowTheme.colors
@@ -18,15 +19,12 @@ import org.jetbrains.skiko.hostOs
 
 @Composable
 fun WindowScope.TitleBar(
+    title: String,
     windowState: WindowState,
     windowProperties: WindowProperties,
     titleBarProperties: TitleBarProperties,
-    title: String? = "NULL",
     modifier: Modifier = Modifier,
     onClose: () -> Unit,
-    onAdjustSize: (() -> Unit)?,
-    onMaximize: (() -> Unit)?,
-    onMinimize: () -> Unit,
     windowSizeCallback: (Int) -> Unit
 ) {
     val hostOs by remember { derivedStateOf { hostOs.isMacOS } }
@@ -36,6 +34,14 @@ fun WindowScope.TitleBar(
     var titleRect by remember { mutableStateOf(Rect(0f, 1f, 1f, 0f)) }
     val titleOverlapsButtons by remember(titleRect) {
         derivedStateOf { titleRect overlaps buttonsRect }
+    }
+
+    val windowFullscreen by remember(windowState.placement) {
+        derivedStateOf { windowState.placement.resize(WindowPlacement.Fullscreen) }
+    }
+
+    val windowMaximized by remember(windowState.placement) {
+        derivedStateOf { windowState.placement.resize(WindowPlacement.Maximized) }
     }
 
     var buttonsWidth by remember { mutableStateOf(0) }
@@ -50,7 +56,7 @@ fun WindowScope.TitleBar(
             .background(colors.titlebarBackground)
             .onGloballyPositioned { parentSize = it.size }
             .drawTitle(
-                title = title ?: "",
+                title = title,
                 parentSize = parentSize,
                 draw = !titleOverlapsButtons && onMacDrawTitle,
                 titleRect = { titleRect = it }
@@ -61,8 +67,8 @@ fun WindowScope.TitleBar(
             windowState = windowState,
             windowProperties = windowProperties,
             onClose = onClose,
-            onMinimize = onMinimize,
-            onAdjustSize = onAdjustSize,
+            onMinimize = { windowState.isMinimized = !windowState.isMinimized },
+            onAdjustSize = windowProperties.ifResizable { windowState.placement = windowFullscreen },
             modifier = modifier.width(IntrinsicSize.Max)
                 .onGloballyPositioned {
                     buttonsRect = it.boundsInRoot()
@@ -73,14 +79,14 @@ fun WindowScope.TitleBar(
 
         DraggableArea(
             modifier = Modifier.fillMaxHeight().width(draggableWidthAsDP),
-            adjustSize = onMaximize,
+            adjustSize = windowProperties.ifResizable { windowState.placement = windowMaximized }
         )
 
         if (!hostOs) WindowsTitleButtons(
             windowProperties = windowProperties,
             onClose = onClose,
-            onMinimize = onMinimize,
-            onAdjustSize = onMaximize,
+            onMinimize = { windowState.isMinimized = !windowState.isMinimized },
+            onAdjustSize = windowProperties.ifResizable { windowState.placement = windowMaximized },
             modifier = modifier.width(IntrinsicSize.Min)
                 .onGloballyPositioned {
                     buttonsRect = it.boundsInRoot()
@@ -93,3 +99,9 @@ fun WindowScope.TitleBar(
 
 private infix fun Rect.overlaps(other: Rect): Boolean =
     this.left <= other.right && this.right >= other.left
+
+private fun WindowPlacement.resize(target: WindowPlacement) =
+    if (this == target) WindowPlacement.Floating else target
+
+private fun WindowProperties.ifResizable(block: () -> Unit): (() -> Unit)? =
+    if (resizable) block else null

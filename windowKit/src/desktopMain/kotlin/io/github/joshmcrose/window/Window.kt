@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.WindowScope
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
 import io.github.joshmcrose.theme.ThemeProperties
@@ -70,42 +70,47 @@ fun MainWindow(
             shapes = theme.shapes,
             typography = theme.typography
         ) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.Transparent,
-                shape = shapes.small,
-                border = BorderStroke(1.dp, colors.appBorder)
-            ) {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    TitleBar(
-                        title = title,
-                        windowState = state,
-                        windowProperties = windowProperties,
-                        titleBarProperties = titleBarProperties,
-                        onClose = onCloseRequest,
-                        onAdjustSize = if (windowProperties.resizable) { // TODO: Extract into own function
-                            {
-                                state.placement = if (state.placement == WindowPlacement.Floating)
-                                    WindowPlacement.Fullscreen
-                                else WindowPlacement.Floating
-                            }
-                        } else null,
-                        onMaximize = if (windowProperties.resizable) { // TODO: Extract into own function
-                            {
-                                state.placement = if (state.placement == WindowPlacement.Maximized)
-                                    WindowPlacement.Floating
-                                else WindowPlacement.Maximized
-                            }
-                        } else null,
-                        onMinimize = { state.isMinimized = !state.isMinimized },
-                        windowSizeCallback = {
-                            defaultMinWidth = it
-                        }
-                    )
+            WindowSurface(
+                title = title,
+                state = state,
+                windowProperties = windowProperties,
+                titleBarProperties = titleBarProperties,
+                onCloseRequest = onCloseRequest,
+                windowSizeCallback = { defaultMinWidth = it },
+                content = content
+            )
+        }
+    }
+}
 
-                    content()
-                }
-            }
+@Composable
+fun WindowScope.WindowSurface(
+    title: String,
+    state: WindowState,
+    windowProperties: WindowProperties,
+    titleBarProperties: TitleBarProperties,
+    modifier: Modifier = Modifier,
+    onCloseRequest: () -> Unit,
+    windowSizeCallback: (Int) -> Unit,
+    content: @Composable () -> Unit
+) {
+    Surface(
+        modifier = modifier.fillMaxSize(),
+        color = Color.Transparent,
+        shape = shapes.small,
+        border = BorderStroke(1.dp, colors.appBorder)
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            TitleBar(
+                title = title,
+                windowState = state,
+                windowProperties = windowProperties,
+                titleBarProperties = titleBarProperties,
+                onClose = onCloseRequest,
+                windowSizeCallback = windowSizeCallback
+            )
+
+            content()
         }
     }
 }
