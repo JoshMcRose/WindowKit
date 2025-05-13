@@ -2,17 +2,12 @@ package io.github.joshmcrose.titlebar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -21,6 +16,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowPlacement
@@ -41,13 +38,12 @@ fun MacTitleButtons(
     onAdjustSize: (() -> Unit)?,
     onMinimize: () -> Unit
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isHovered by interactionSource.collectIsHoveredAsState()
+    var isHovered by remember { mutableStateOf(false) }
 
     val isFullScreen by remember(windowState.placement) { mutableStateOf(windowState.placement == WindowPlacement.Fullscreen) }
 
     Row(
-        modifier = modifier,
+        modifier = modifier.onHover { isHovered = it },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
     ) {
@@ -61,7 +57,7 @@ fun MacTitleButtons(
         )
 
         MacButton(
-            painter = if (isFullScreen) null else Res.drawable.minimize,
+            painter = if (isFullScreen) null else Res.drawable.mac_minimize,
             contentDescription = stringResource(Res.string.minimize),
             color = if (isFullScreen) colors.macDisabledToolbarIconColor else colors.macMinimizeIconColor,
             isHovered = isHovered,
@@ -69,7 +65,7 @@ fun MacTitleButtons(
         )
 
         MacButton(
-            painter = if (isFullScreen) Res.drawable.open_in_full else Res.drawable.close_fullscreen,
+            painter = if (isFullScreen) Res.drawable.close_fullscreen else Res.drawable.open_in_full,
             contentDescription =
                 stringResource(if (isFullScreen) Res.string.exit_full_screen else Res.string.enter_full_Screen),
             color = if (windowProperties.resizable) colors.macMaximizeIconColor else colors.macDisabledToolbarIconColor,
@@ -122,7 +118,11 @@ fun WindowsTitleButtons(
     }
 }
 
-fun Modifier.titleBarButton(color: Color, enabled: Boolean = true, onClick: () -> Unit): Modifier = composed {
+fun Modifier.titleBarButton(
+    color: Color,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+): Modifier = composed {
     clip(CircleShape)
         .size(14.dp)
         .background(color, shape = CircleShape) // TODO: Test this
@@ -172,5 +172,26 @@ fun WindowsButton(
         contentPadding = PaddingValues(4.dp),
     ) {
         Icon(painter = painter, contentDescription = contentDescription)
+    }
+}
+
+/**
+ * A modifier extension function that adds hover detection to a composable.
+ *
+ * This function adds a pointer input handler that detects when the pointer enters or exits
+ * the composable and invokes the provided callback with the hover state.
+ *
+ * @param onHover Callback to invoke when the hover state changes
+ * @return A modifier with hover detection
+ */
+fun Modifier.onHover(onHover: (Boolean) -> Unit) = pointerInput(Unit) {
+    awaitPointerEventScope {
+        while (true) {
+            val event = awaitPointerEvent()
+            when (event.type) {
+                PointerEventType.Enter -> onHover(true)
+                PointerEventType.Exit -> onHover(false)
+            }
+        }
     }
 }
