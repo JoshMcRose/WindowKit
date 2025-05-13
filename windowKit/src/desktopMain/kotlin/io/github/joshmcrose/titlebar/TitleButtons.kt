@@ -124,10 +124,10 @@ fun Modifier.titleBarButton(
     onClick: () -> Unit
 ): Modifier = composed {
     clip(CircleShape)
-        .size(14.dp)
-        .background(color, shape = CircleShape) // TODO: Test this
-//        .border(width = 1.dp, color = colorScheme.tertiary.copy(alpha = 0.5f), shape = CircleShape)
-        .shadow(elevation = 2.dp, shape = CircleShape, clip = true)
+        .size(12.dp)
+        .shadow(elevation = 2.dp, shape = CircleShape)
+        .background(color)
+        .padding(1.dp)
         .clickable(onClick = onClick, enabled = enabled)
 }
 
