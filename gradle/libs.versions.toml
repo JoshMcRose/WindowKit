@@ -1,5 +1,5 @@
 [versions]
-compose-plugin = "1.8.1"
+compose-plugin = "1.8.2"
 kotlin = "2.1.21"
 napier = "2.7.1"
 theme-detector = "3.9.1"
