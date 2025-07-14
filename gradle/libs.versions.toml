@@ -4,7 +4,7 @@ kotlin = "2.1.21"
 napier = "2.7.1"
 theme-detector = "3.9.1"
 dokka = "2.0.0"
-publish = "0.32.0"
+publish = "0.34.0"
 collections = "0.4.0"
 
 [libraries]
